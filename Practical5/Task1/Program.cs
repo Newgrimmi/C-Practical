@@ -18,6 +18,7 @@ namespace Task1
             //WriteWords(SplitText(sentence));
         }
 
+        //Считает сколько слов в предложении, чтобы дальше создать массив такой длины
         public static int CountWords(char[] let)
         {
             int countWord = 1;
@@ -34,6 +35,7 @@ namespace Task1
             return countWord;
         }
 
+        //Разделяет полученный текст на массив слов
         public static string[] SplitText(string text)
         {
             char[] letters = text.ToCharArray();

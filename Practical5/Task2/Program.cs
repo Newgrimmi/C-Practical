@@ -16,6 +16,7 @@ namespace Task2
             Reverse(SplitText(sentence));
         }
 
+        //Считает сколько слов в предложении, чтобы дальше создать массив такой длины
         public static int CountWords(char[] let)
         {
             int countWord = 1;
@@ -33,6 +34,7 @@ namespace Task2
             return countWord;
         }
 
+        //Разделяет полученный текст на массив слов
         public static string[] SplitText(string text)
         {
             char[] letters = text.ToCharArray();
@@ -64,6 +66,7 @@ namespace Task2
             return words;
         }
 
+        //Меняет местами слова в массиве и конвертирует их в строчку
         public static string Reverse(string[] text)
         {
             int firstWord = 0;
