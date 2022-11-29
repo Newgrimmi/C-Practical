@@ -8,11 +8,13 @@ namespace Task1
     {
         static void Main()
         {
+            ReadEmployeeInfo();
             MainActive(); 
         }
 
         static void MainActive()
         {
+
             for (int i = 0; i < 1; i++)
             {
                 Console.WriteLine("Введите 1, если хотите просмотреть данные");
@@ -43,13 +45,13 @@ namespace Task1
         {
             StringBuilder employeeInfo = new StringBuilder();
 
-            if (File.Exists(@"e:\employeeData") == false)
+            if (File.Exists("employeeData.txt") == false)
             {
                 employeeInfo.Append("1");
             }
             else
             {
-                string[] employeeCount = File.ReadAllLines(@"e:\employeeData");
+                string[] employeeCount = File.ReadAllLines("employeeData.txt");
                 employeeInfo.Append("\n" + (employeeCount.Length + 1));
             }
 
@@ -66,17 +68,25 @@ namespace Task1
             Console.WriteLine("Введите место рождения");
             employeeInfo.Append(" " + "город:" + Console.ReadLine());
 
-            File.AppendAllText(@"e:\employeeData", employeeInfo.ToString());
+            File.AppendAllText("employeeData.txt", employeeInfo.ToString());
         }
 
         static void ReadEmployeeInfo()
         {
-            string[] info = File.ReadAllLines(@"e:\employeeData");
-            for (int i = 0; i < info.Length; i++)
+            if (File.Exists("employeeData.txt") == false)
             {
-                Console.WriteLine($"{info[i]}");
+                WriteEmployee();
             }
-            Console.ReadKey();
+            else
+            {
+                string[] info = File.ReadAllLines("employeeData.txt");
+                for (int i = 0; i < info.Length; i++)
+                {
+                    Console.WriteLine($"{info[i]}");
+                }
+                Console.ReadKey();
+            }
+            
         }
     }
 }
