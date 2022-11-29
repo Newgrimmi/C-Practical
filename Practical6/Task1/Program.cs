@@ -8,14 +8,13 @@ namespace Task1
     {
         static void Main()
         {
-            ReadEmployeeInfo();
             MainActive(); 
         }
 
         static void MainActive()
         {
-
-            for (int i = 0; i < 1; i++)
+            bool menuActive = true;
+            while (menuActive)
             {
                 Console.WriteLine("Введите 1, если хотите просмотреть данные");
                 Console.WriteLine("Введите 2, если хотите внести данные");
@@ -25,17 +24,15 @@ namespace Task1
                 {
                     case "1":
                         ReadEmployeeInfo();
-                        i--;
                         break;
                     case "2":
                         WriteEmployee();
-                        i--;
                         break;
                     case "3":
+                        menuActive = false;
                         break;
                     default:
                         Console.WriteLine("Введено не верное значение");
-                        i--;
                         break;
                 }
             }
