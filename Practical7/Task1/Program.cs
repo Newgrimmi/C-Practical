@@ -6,30 +6,48 @@ namespace Task1
 {
     class Program
     {
+
         static void Main()
         {
-            MainActive();
+            Worker newWorker = new Worker();
+            Repository rep = new Repository();
+            MainActive(newWorker, rep);
         }
 
-        static void MainActive()
+        static void MainActive(Worker worker, Repository repository)
         {
             bool menuActive = true;
             while (menuActive)
             {
+                Console.WriteLine("");
                 Console.WriteLine("Введите 1, если хотите просмотреть данные");
                 Console.WriteLine("Введите 2, если хотите внести данные");
                 Console.WriteLine("Введите 3, если хотите выйти");
+                Console.WriteLine("Введите 4, если хотите посмотреть данные по id");
+                Console.WriteLine("Введите 5, если хотите удалить данные по id");
+                Console.WriteLine("Введите 6, если хотите сортировать данные по датам");
                 string curNumb = Console.ReadLine();
                 switch (curNumb)
                 {
                     case "1":
-                        ReadEmployeeInfo();
+                        ReadEmployeeInfo(repository);
                         break;
                     case "2":
-                        WriteEmployee();
+                        WriteEmployee(worker, repository);
                         break;
                     case "3":
                         menuActive = false;
+                        break;
+                    case "4":
+                        Console.WriteLine("Введите id");
+                        repository.GetWorkerById(int.Parse(Console.ReadLine())).PrintInfo();
+                        break;
+                    case "5":
+                        Console.WriteLine("Введите id");
+                        repository.DeleteWorker(int.Parse(Console.ReadLine()));
+                        break;
+                    case "6":
+                        ReadEmployeeInfoToData(repository);
                         break;
                     default:
                         Console.WriteLine("Введено не верное значение");
@@ -38,54 +56,46 @@ namespace Task1
             }
         }
 
-        static void WriteEmployee()
+        static void WriteEmployee(Worker worker, Repository repository)
         {
-            StringBuilder employeeInfo = new StringBuilder();
 
-            if (File.Exists("employeeData.txt") == false)
-            {
-                employeeInfo.Append("1");
-            }
-            else
-            {
-                string[] employeeCount = File.ReadAllLines("employeeData.txt");
-                employeeInfo.Append("\n" + (employeeCount.Length + 1));
-            }
-
-            Console.WriteLine("Введите дату и время добавления записи: дд.мм.гггг чч:мм");
-            employeeInfo.Append(" " + Console.ReadLine());
+            worker.TimeToAdd = DateTime.Now;
             Console.WriteLine("Введите Ф.И.О.");
-            employeeInfo.Append(" " + Console.ReadLine());
+            worker.FIO = Console.ReadLine();
             Console.WriteLine("Введите возраст");
-            employeeInfo.Append(" " + Console.ReadLine());
+            worker.Age = Int32.Parse(Console.ReadLine());
             Console.WriteLine("Рост");
-            employeeInfo.Append(" " + Console.ReadLine());
+            worker.Height = float.Parse(Console.ReadLine());
             Console.WriteLine("Дату рождения: дд.мм.гггг");
-            employeeInfo.Append(" " + Console.ReadLine());
+            worker.Birthday = DateTime.Parse(Console.ReadLine());
             Console.WriteLine("Введите место рождения");
-            employeeInfo.Append(" " + "город:" + Console.ReadLine());
-
-            File.AppendAllText("employeeData.txt", employeeInfo.ToString());
+            worker.PlaceToBorn = Console.ReadLine();
+            repository.AddWorker(worker);
         }
 
-        static void ReadEmployeeInfo()
+        static void ReadEmployeeInfo(Repository rep)
         {
-            if (File.Exists("employeeData.txt") == false)
+            Worker[] allWorker = rep.GetAllWorkers();
+            for (int i = 0; i < allWorker.Length; i++)
             {
-                WriteEmployee();
-            }
-            else
+                allWorker[i].PrintInfo();
+            };
+        }
+        static void ReadEmployeeInfoToData(Repository rep)
+        {
+            Console.WriteLine("Введите первую дату");
+            DateTime firstData = DateTime.Parse(Console.ReadLine());
+            Console.WriteLine("Введите вторую дату");
+            DateTime secondData = DateTime.Parse(Console.ReadLine());
+            Worker[] allWorker = rep.GetWorkersBetweenTwoDates(firstData, secondData);
+            
+            for (int i = 0; i < allWorker.Length; i++)
             {
-                string[] info = File.ReadAllLines("employeeData.txt");
-                for (int i = 0; i < info.Length; i++)
-                {
-                    Console.WriteLine($"{info[i]}");
-                }
-                Console.ReadKey();
-            }
-
+                allWorker[i].PrintInfo();
+            };
         }
     }
 }
+
 
 
