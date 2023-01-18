@@ -26,11 +26,14 @@ namespace Task1
                 Console.WriteLine("Введите 4, если хотите посмотреть данные по id");
                 Console.WriteLine("Введите 5, если хотите удалить данные по id");
                 Console.WriteLine("Введите 6, если хотите сортировать данные по датам");
+                Console.WriteLine("Введите 7, если хотите сортировать данные по id");
+                Console.WriteLine("Введите 8, если хотите сортировать данные по возрасту");
+                Console.WriteLine("Введите 9, если хотите сортировать данные по ФИО");
                 string curNumb = Console.ReadLine();
                 switch (curNumb)
                 {
                     case "1":
-                        ReadEmployeeInfo(repository);
+                        ReadEmployeeInfo(repository.GetAllWorkers());
                         break;
                     case "2":
                         WriteEmployee(worker, repository);
@@ -48,6 +51,15 @@ namespace Task1
                         break;
                     case "6":
                         ReadEmployeeInfoToData(repository);
+                        break;
+                    case "7":
+                        ReadEmployeeInfo(repository.SortWorkersToId());
+                        break;
+                    case "8":
+                        ReadEmployeeInfo(repository.SortWorkersToAge());
+                        break;
+                    case "9":
+                        ReadEmployeeInfo(repository.SortWorkersToFIO());
                         break;
                     default:
                         Console.WriteLine("Введено не верное значение");
@@ -73,14 +85,14 @@ namespace Task1
             repository.AddWorker(worker);
         }
 
-        static void ReadEmployeeInfo(Repository rep)
+        static void ReadEmployeeInfo(Worker[] allWorker)
         {
-            Worker[] allWorker = rep.GetAllWorkers();
             for (int i = 0; i < allWorker.Length; i++)
             {
                 allWorker[i].PrintInfo();
             };
         }
+
         static void ReadEmployeeInfoToData(Repository rep)
         {
             Console.WriteLine("Введите первую дату");

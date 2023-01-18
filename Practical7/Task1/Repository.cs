@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 
@@ -36,7 +37,7 @@ namespace Task1
             for (int i = 0; i < info.Length; i++)
             {
                 string[] arg = info[i].Split(',');
-                if(int.Parse(arg[0]) == id)
+                if (int.Parse(arg[0]) == id)
                 {
                     readWorker = new Worker(int.Parse(arg[0]), DateTime.Parse(arg[1]), arg[2], int.Parse(arg[3]), float.Parse(arg[4]), DateTime.Parse(arg[5]), arg[6]);
                     break;
@@ -94,8 +95,8 @@ namespace Task1
             index++;
         }
 
-         public Worker[] GetWorkersBetweenTwoDates(DateTime dateFrom, DateTime dateTo)
-         {
+        public Worker[] GetWorkersBetweenTwoDates(DateTime dateFrom, DateTime dateTo)
+        {
             // здесь происходит чтение из файла
             // фильтрация нужных записей
             // и возврат массива считанных экземпляров
@@ -107,7 +108,7 @@ namespace Task1
             for (int i = 0; i < info.Length; i++)
             {
                 string[] arg = info[i].Split(',');
-                if(dateFrom < DateTime.Parse(arg[1]) && DateTime.Parse(arg[1]) < dateTo)
+                if (dateFrom < DateTime.Parse(arg[1]) && DateTime.Parse(arg[1]) < dateTo)
                 {
                     countWorker++;
                     worker.Add(new Worker(int.Parse(arg[0]), DateTime.Parse(arg[1]), arg[2], int.Parse(arg[3]), float.Parse(arg[4]), DateTime.Parse(arg[5]), arg[6]));
@@ -115,6 +116,90 @@ namespace Task1
             }
 
             readWorker = worker.ToArray();
+            return readWorker;
+        }
+
+        public Worker[] SortWorkersToId()
+        {
+            Console.WriteLine("Введите 0, если по возрастанию, 1 если по убыванию");
+            int upDown = int.Parse(Console.ReadLine());
+            string[] info = File.ReadAllLines("employeeData.txt");
+            Worker[] readWorker = new Worker[info.Length];
+            List<Worker> worker = new List<Worker>();
+
+            for (int i = 0; i < info.Length; i++)
+            {
+                string[] arg = info[i].Split(',');
+                readWorker[i] = new Worker(int.Parse(arg[0]), DateTime.Parse(arg[1]), arg[2], int.Parse(arg[3]), float.Parse(arg[4]), DateTime.Parse(arg[5]), arg[6]);
+            }
+
+            if (upDown == 0)
+            {
+                worker.AddRange(readWorker.OrderBy(w => w.Id));
+                return worker.ToArray();
+            }   
+            else if (upDown == 1)
+            {
+
+                worker.AddRange(readWorker.OrderByDescending(w => w.Id));
+                return worker.ToArray();
+            }
+                
+            return readWorker;
+        }
+
+        public Worker[] SortWorkersToAge()
+        {
+            Console.WriteLine("Введите 0, если по возрастанию, 1 если по убыванию");
+            int upDown = int.Parse(Console.ReadLine());
+            string[] info = File.ReadAllLines("employeeData.txt");
+            Worker[] readWorker = new Worker[info.Length];
+            List<Worker> worker = new List<Worker>();
+
+            for (int i = 0; i < info.Length; i++)
+            {
+                string[] arg = info[i].Split(',');
+                readWorker[i] = new Worker(int.Parse(arg[0]), DateTime.Parse(arg[1]), arg[2], int.Parse(arg[3]), float.Parse(arg[4]), DateTime.Parse(arg[5]), arg[6]);
+            }
+
+            if (upDown == 0)
+            {
+                worker.AddRange(readWorker.OrderBy(w => w.Age));
+                return worker.ToArray();
+            }
+            else if (upDown == 1)
+            {
+                worker.AddRange(readWorker.OrderByDescending(w => w.Age));
+                return worker.ToArray();
+            };
+
+            return readWorker;
+        }
+
+        public Worker[] SortWorkersToFIO()
+        {
+            Console.WriteLine("Введите 0, если по возрастанию, 1 если по убыванию");
+            int upDown = int.Parse(Console.ReadLine());
+            string[] info = File.ReadAllLines("employeeData.txt");
+            Worker[] readWorker = new Worker[info.Length];
+            List<Worker> worker = new List<Worker>();
+
+            for (int i = 0; i < info.Length; i++)
+            {
+                string[] arg = info[i].Split(',');
+                readWorker[i] = new Worker(int.Parse(arg[0]), DateTime.Parse(arg[1]), arg[2], int.Parse(arg[3]), float.Parse(arg[4]), DateTime.Parse(arg[5]), arg[6]);
+            }
+
+            if (upDown == 0)
+            {
+                worker.AddRange(readWorker.OrderBy(w => w.FIO));
+                return worker.ToArray();
+            }
+            else if (upDown == 1)
+            {
+                worker.AddRange(readWorker.OrderByDescending(w => w.FIO));
+                return worker.ToArray();
+            };
 
             return readWorker;
         }
